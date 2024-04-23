@@ -58,7 +58,7 @@ VOL        DEPART               A                ARRIVEE              DUREE
 
 /*
 Question C.2 10 points
-• Produire la liste des vols prévus pour la période du 13 au 19 mai 2023. Pour chacun, indiquer
+• Produire la liste des vols prévus pour la période du 13 au 19 mai 2024. Pour chacun, indiquer
 dans l'ordre:
 - La date du vol, sous le format YYYY-MM-DD (DATE),
 - Le numéro du vol (VOL),
@@ -67,26 +67,10 @@ tous les segments, du départ initial à la destination finale du vol) (DISPONIBLE
 • Cette liste est triée par date puis par vol.
 */
 
-DROP VIEW IF EXISTS V_ENVOLEE_SIEGES
-GO
-CREATE VIEW V_ENVOLEES_SIEGES AS
-SELECT
-	ENVOLEE.ID_ENVOLEE,
-	AVION.APPEL_AVION,
-	AVION.ID_AVION,
-	AVION.NOMBRE_PLACES,
-	(SELECT COUNT(*) 
-		FROM RESERVATION_ENVOLEE 
-		WHERE RESERVATION_ENVOLEE.ID_ENVOLEE = ENVOLEE.ID_ENVOLEE) AS NB_RESERVE
-FROM ENVOLEE
-	INNER JOIN AVION ON
-		ENVOLEE.ID_AVION = AVION.ID_AVION
-GO
-
 SELECT
 	CAST(ENVOLEE.DATE_ENVOLEE AS DATE) AS DATE,
 	LEFT(VOL.NO_VOL, 10) AS VOL,
-	LEFT((V_ENVOLEES_SIEGES.NOMBRE_PLACES - V_ENVOLEES_SIEGES.NB_RESERVE), 20) AS DISPONIBLES
+	LEFT(MIN(V_ENVOLEES_SIEGES.NOMBRE_PLACES - V_ENVOLEES_SIEGES.NB_RESERVE), 20) AS DISPONIBLES
 FROM
 	SEGMENT
 	INNER JOIN ENVOLEE
@@ -99,9 +83,98 @@ WHERE
 	ENVOLEE.DATE_ENVOLEE BETWEEN '2024-05-13' AND '2024-05-19'
 GROUP BY
 	ENVOLEE.DATE_ENVOLEE,
-	VOL.NO_VOL,
-	V_ENVOLEES_SIEGES.NOMBRE_PLACES,
-	V_ENVOLEES_SIEGES.NB_RESERVE
+	VOL.NO_VOL
 ORDER BY
 	ENVOLEE.DATE_ENVOLEE, 
 	VOL.NO_VOL
+
+/*
+DATE       VOL        DISPONIBLES
+---------- ---------- --------------------
+2024-05-13 1822       44
+2024-05-13 1823       47
+2024-05-13 1922       31
+2024-05-13 1923       25
+2024-05-14 1822       47
+2024-05-14 1823       48
+2024-05-14 1922       32
+2024-05-14 1923       31
+2024-05-15 1822       47
+2024-05-15 1823       48
+2024-05-15 1922       30
+2024-05-15 1923       32
+2024-05-16 1822       44
+2024-05-16 1823       46
+2024-05-16 1922       31
+2024-05-16 1923       29
+2024-05-17 1822       31
+2024-05-17 1823       48
+2024-05-17 1922       48
+2024-05-17 1923       31
+2024-05-18 1822       29
+2024-05-18 1823       47
+2024-05-18 1922       46
+2024-05-18 1923       32
+2024-05-19 1822       31
+2024-05-19 1823       47
+2024-05-19 1922       48
+2024-05-19 1923       28
+
+(28 rows affected)
+*/
+
+/*
+Question C.3 10 points
+• Produire la liste des passagers pour les vols de la période du 13 au 19 mai 2024. Cette liste
+comporte les informations suivantes dans l'ordre:
+- La date du vol, sous le format YYYY-MM-DD (DEPART),
+- L’heure de départ, sous sous le format hh:mi (A),
+- Le numéro du vol (VOL),
+- Le nom, le prénom et l’identifiant du passager (PASSAGER),
+- Le nom de la ville de l'aéroport initial de départ du passager (DE)
+- Le nom de la ville de l'aéroport d’arrivée pour la destination finale du passager (A).
+• Cette liste est triée par date des envolées, puis par vol, par segment initial (ordre du segment) et
+par segment d’arrivée (ordre du segment), et finalement par nom, prénom et id des passagers.
+*/
+
+SELECT
+	ENVOLEE.DATE_ENVOLEE AS DEPART,
+	SEGMENT.HEURE_DEPART AS A,
+	VOL.NO_VOL AS VOL,
+	CONCAT(V_PASSAGERS_VOLS.NOM, ', ', V_PASSAGERS_VOLS.PRENOM, ' (', V_PASSAGERS_VOLS.ID_PASSAGER, ')') AS PASSAGER,
+	AEROPORT_DEPART.NOM_VILLE AS DE,
+	AEROPORT_DESTINATION.NOM_VILLE AS A
+FROM V_PASSAGERS_VOLS
+	INNER JOIN SEGMENT
+		ON SEGMENT.ID_VOL = V_PASSAGERS_VOLS.ID_VOL
+	INNER JOIN ENVOLEE
+		ON ENVOLEE.ID_SEGMENT = SEGMENT.ID_SEGMENT
+	INNER JOIN VOL
+		ON VOL.ID_VOL = SEGMENT.ID_VOL
+	INNER JOIN AEROPORT AEROPORT_DEPART
+		ON AEROPORT_DEPART.ID_AEROPORT = SEGMENT.AEROPORT_DEPART
+	INNER JOIN AEROPORT AEROPORT_DESTINATION
+		ON AEROPORT_DESTINATION.ID_AEROPORT = SEGMENT.AEROPORT_DESTINATION
+
+WHERE
+	ENVOLEE.DATE_ENVOLEE BETWEEN '2024-05-13' AND '2024-05-19'
+GROUP BY
+	ENVOLEE.DATE_ENVOLEE,
+	SEGMENT.HEURE_DEPART,
+	VOL.NO_VOL,
+	V_PASSAGERS_VOLS.NOM,
+	V_PASSAGERS_VOLS.PRENOM,
+	V_PASSAGERS_VOLS.ID_PASSAGER,
+	AEROPORT_DEPART.NOM_VILLE,
+	AEROPORT_DESTINATION.NOM_VILLE,
+	V_PASSAGERS_VOLS.ORDRE_SEG_DEPART,
+	V_PASSAGERS_VOLS.ORDRE_SEG_ARRIVEE
+ORDER BY
+	ENVOLEE.DATE_ENVOLEE,
+	VOL.NO_VOL,
+	V_PASSAGERS_VOLS.ORDRE_SEG_DEPART,
+	V_PASSAGERS_VOLS.ORDRE_SEG_ARRIVEE,
+	V_PASSAGERS_VOLS.NOM,
+	V_PASSAGERS_VOLS.PRENOM,
+	V_PASSAGERS_VOLS.ID_PASSAGER
+	

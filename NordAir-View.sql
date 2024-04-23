@@ -213,7 +213,78 @@ SELECT
 		SEGMENT.ID_VOL
 GO
 /*
+ID_PASSAGER                             NOM             PRENOM          DATE_ENVOLEE            ID_VOL                                  ORDRE_SEG_DEPART ORDRE_SEG_ARRIVEE
+--------------------------------------- --------------- --------------- ----------------------- --------------------------------------- ---------------- -----------------
+1                                       Barbeau         Isabelle        2024-05-13 00:00:00.000 1                                       A                A
+2                                       Berthiaume      Jonny           2024-05-13 00:00:00.000 1                                       A                A
+3                                       Bolduc          Sebastien       2024-05-13 00:00:00.000 1                                       B                B
+4                                       BrindAmour      Jean-Francois   2024-05-13 00:00:00.000 1                                       A                A
+5                                       Desjardins      Francois        2024-05-13 00:00:00.000 1                                       A                D
+16                                      Mercier         David           2024-05-13 00:00:00.000 1                                       B                B
+2                                       Berthiaume      Jonny           2024-05-13 00:00:00.000 2                                       D                D
+14                                      Nadeau          Michel          2024-05-13 00:00:00.000 3                                       D                D
+9                                       Fortin          Mathieu         2024-05-13 00:00:00.000 4                                       A                B
+12                                      Gregoire        Pierre-Luc      2024-05-13 00:00:00.000 4                                       A                C
+15                                      Tremblay        Vincent         2024-05-13 00:00:00.000 4                                       C                C
+20                                      Poussier        Genevieve       2024-05-13 00:00:00.000 4                                       C                C
+29                                      Lapointe-Girard etienne         2024-05-13 00:00:00.000 4                                       A                C
+32                                      Ouellet         Remi            2024-05-13 00:00:00.000 4                                       A                B
+33                                      Ouellette       Pierre          2024-05-13 00:00:00.000 4                                       A                C
+35                                      Tremblay        Sebastien       2024-05-13 00:00:00.000 4                                       A                D
+36                                      Talbot          Remi            2024-05-13 00:00:00.000 4                                       A                D
+8                                       Harnois         Stephane J.     2024-05-14 00:00:00.000 1                                       D                D
+4                                       BrindAmour      Jean-Francois   2024-05-14 00:00:00.000 4                                       B                B
+37                                      Rouillard       Guy             2024-05-15 00:00:00.000 1                                       C                C
+6                                       Cote            Mathieu         2024-05-15 00:00:00.000 3                                       D                D
+9                                       Fortin          Mathieu         2024-05-15 00:00:00.000 3                                       C                D
+7                                       Fortin          Jean-Philippe   2024-05-16 00:00:00.000 1                                       D                D
+18                                      Duval           Philippe        2024-05-16 00:00:00.000 1                                       A                A
+19                                      Lapierre        Guillaume       2024-05-16 00:00:00.000 1                                       A                A
+20                                      Poussier        Genevieve       2024-05-16 00:00:00.000 1                                       B                B
+21                                      Mallet          Sylvain         2024-05-16 00:00:00.000 1                                       A                A
+22                                      Saucier         Jean-Francois   2024-05-16 00:00:00.000 1                                       A                D
+10                                      Jobin           Samuel          2024-05-16 00:00:00.000 2                                       B                B
+19                                      Lapierre        Guillaume       2024-05-16 00:00:00.000 2                                       D                D
+37                                      Rouillard       Guy             2024-05-16 00:00:00.000 2                                       B                B
+31                                      Aubert          Vincent         2024-05-16 00:00:00.000 3                                       D                D
+5                                       Desjardins      Francois        2024-05-16 00:00:00.000 4                                       A                C
+7                                       Fortin          Jean-Philippe   2024-05-16 00:00:00.000 4                                       A                A
+9                                       Fortin          Mathieu         2024-05-16 00:00:00.000 4                                       A                A
+25                                      Aspiros         Charles         2024-05-17 00:00:00.000 1                                       D                D
+5                                       Desjardins      Francois        2024-05-17 00:00:00.000 4                                       D                D
+11                                      Ratte           Francois        2024-05-17 00:00:00.000 4                                       A                A
+21                                      Mallet          Sylvain         2024-05-17 00:00:00.000 4                                       B                B
+32                                      Ouellet         Remi            2024-05-17 00:00:00.000 4                                       C                C
+11                                      Ratte           Francois        2024-05-18 00:00:00.000 1                                       D                D
+12                                      Gregoire        Pierre-Luc      2024-05-18 00:00:00.000 1                                       B                B
+23                                      Lagace          Mathieu         2024-05-18 00:00:00.000 1                                       D                D
+29                                      Lapointe-Girard etienne         2024-05-18 00:00:00.000 1                                       B                B
+33                                      Ouellette       Pierre          2024-05-18 00:00:00.000 1                                       B                B
+35                                      Tremblay        Sebastien       2024-05-18 00:00:00.000 1                                       A                A
+36                                      Talbot          Remi            2024-05-18 00:00:00.000 1                                       A                A
+37                                      Rouillard       Guy             2024-05-18 00:00:00.000 1                                       A                A
+13                                      Dostie-Proulx   Pierre-Luc      2024-05-18 00:00:00.000 2                                       C                C
+17                                      Dionne          Marjorie        2024-05-18 00:00:00.000 3                                       A                A
+26                                      Picard          Maxime          2024-05-18 00:00:00.000 3                                       C                D
+34                                      Pelletier       Nathalie        2024-05-18 00:00:00.000 3                                       A                A
+24                                      Blanchette      Marc            2024-05-19 00:00:00.000 1                                       D                D
+27                                      Richard         Jean-Francois   2024-05-19 00:00:00.000 2                                       B                B
+30                                      Mercier         Nicolas         2024-05-19 00:00:00.000 2                                       C                C
+22                                      Saucier         Jean-Francois   2024-05-19 00:00:00.000 4                                       A                C
+24                                      Blanchette      Marc            2024-05-19 00:00:00.000 4                                       A                A
+26                                      Picard          Maxime          2024-05-19 00:00:00.000 4                                       A                A
+28                                      Dube            Jason           2024-05-19 00:00:00.000 4                                       A                A
+28                                      Dube            Jason           2024-05-20 00:00:00.000 1                                       D                D
+35                                      Tremblay        Sebastien       2024-05-20 00:00:00.000 1                                       B                B
+36                                      Talbot          Remi            2024-05-20 00:00:00.000 1                                       B                B
+37                                      Rouillard       Guy             2024-05-20 00:00:00.000 1                                       B                B
+17                                      Dionne          Marjorie        2024-05-20 00:00:00.000 3                                       B                B
+34                                      Pelletier       Nathalie        2024-05-20 00:00:00.000 3                                       B                B
+16                                      Mercier         David           2024-05-20 00:00:00.000 4                                       C                C
+22                                      Saucier         Jean-Francois   2024-05-20 00:00:00.000 4                                       D                D
+33                                      Ouellette       Pierre          2024-05-20 00:00:00.000 4                                       C                C
 
+(68 rows affected)
 */
 SELECT * FROM V_PASSAGERS_VOLS
 ORDER BY DATE_ENVOLEE,  ID_VOL
