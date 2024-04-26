@@ -11,8 +11,8 @@ GO
 Question D.1 7 points
 • Produire la liste des tables (type ‘BASE TABLE’) qui ne sont pas des tables enfants.
 • Indiquer dans l’ordre :
-- Le nom de la base de données (BD),
-- Le nom de la table (NOM_TABLE).
+	- Le nom de la base de données (BD),
+	- Le nom de la table (NOM_TABLE).
 • Trier par le nom des tables.
 • Utiliser au besoin des fonctions SQL pour améliorer l’affichage du résultat (ex : SUBSTR ou LEFT).
 */
@@ -47,3 +47,34 @@ NORDAIR              VOL
 
 (7 rows affected)
 */
+
+/*
+Question D.2 9 points
+• Produire la liste de toutes les colonnes des clés étrangères (contraintes d’intégrité référentielle).
+• Pour chaque colonne d’une clé étrangère, indiquer dans l’ordre :
+	- Le nom de la table enfant (TABLE_ENFANT),
+	- Le nom de la colonne (COLONNE_FK),
+	- Le nom de la clé étrangère (CLE_ETRANGERE),
+	- Le nom de la table parent référée (TABLE PARENT),
+	- Le nom de la colonne référée (COLONNE_PK),
+	- Le nom de la contrainte unique référée (CLE_PRIMAIRE)
+• Trier par table enfant puis par clé étrangère et enfin par nom de la colonne de clé étrangère.
+• La requête doit fonctionner dans le cas où des clés étrangères sont composées (comme dans la
+base de données PROJET).
+• Utiliser au besoin des fonctions SQL pour améliorer l’affichage du résultat (ex : SUBSTR ou LEFT).
+*/
+
+SELECT DISTINCT
+	INFORMATION_SCHEMA.TABLE_CONSTRAINTS.TABLE_NAME AS TABLE_ENFANT,
+	INFORMATION_SCHEMA.COLUMNS.COLUMN_NAME AS COLONNE_FK,
+	INFORMATION_SCHEMA.TABLE_CONSTRAINTS.CONSTRAINT_TYPE AS CLE_ETRANGERE
+FROM
+	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	INNER JOIN INFORMATION_SCHEMA.COLUMNS
+		ON INFORMATION_SCHEMA.TABLE_CONSTRAINTS.TABLE_NAME = INFORMATION_SCHEMA.COLUMNS.TABLE_NAME
+WHERE
+	INFORMATION_SCHEMA.TABLE_CONSTRAINTS.CONSTRAINT_TYPE = 'FOREIGN KEY'
+ORDER BY
+	TABLE_ENFANT,
+	CLE_ETRANGERE,
+	COLONNE_FK
