@@ -24,14 +24,20 @@ AS
 BEGIN
 	DECLARE @minutesVol SMALLINT
 	DECLARE @piloteExiste SMALLINT
+
 	SET @piloteExiste =
-	(SELECT  ID_PILOTE
-	FROM PILOTE
-	WHERE NO_PILOTE = @no_pilote)
+	(SELECT
+		ID_PILOTE
+	FROM
+		PILOTE
+	WHERE 
+		NO_PILOTE = @no_pilote)
+
 	IF(@piloteExiste IS NULL)
 	BEGIN
 		RETURN NULL
 	END
+
 	SET @minutesVol =
 	(SELECT
 		ISNULL(SUM(SEGMENT.DUREE_VOL),0)
@@ -45,4 +51,14 @@ BEGIN
 		PILOTE.NO_PILOTE = @no_pilote AND ENVOLEE.DATE_ENVOLEE BETWEEN @date1 AND @date2)
 
 	RETURN @minutesVol
+END
+
+CREATE OR ALTER FUNCTION HEURES_VOL_PILOTE(@no_pilote SMALLINT, @date1 DATE, @date2 DATE)RETURNS DECIMAL(9,3)
+AS
+BEGIN
+	DECLARE @minutes SMALLINT
+	DECLARE @heures DECIMAL(9,3)
+	SET @minutes = dbo.MINUTES_VOL_PILOTE(@no_pilote, @date1, @date2)
+	SET @heures = dbo.MINUTES_EN_HEURES(@minutes)
+	RETURN @heures
 END
