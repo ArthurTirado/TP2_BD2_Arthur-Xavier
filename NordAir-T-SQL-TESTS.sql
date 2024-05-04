@@ -303,7 +303,7 @@ ROLLBACK
    ******************************************************************************** */
 /* Pour chaque test:
    - Après un SELECT: inclure le résultat obtenu seulement si des lignes sont ramenées par le SELECT
-   - Après un EXECUTE: inclure le message obtenu seulement si c'est un message d'erreur
+   - Après un EX	ECUTE: inclure le message obtenu seulement si c'est un message d'erreur
    Par exemple:
 	SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-06-16' AND '2024-06-17'
 	/* Inclure résultat si des lignes affichées */

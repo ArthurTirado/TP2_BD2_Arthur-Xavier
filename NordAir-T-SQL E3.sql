@@ -1,5 +1,68 @@
-/* **********************************************************
+/* ****************************************************DEC******
 	NordAir - Transact SQL E3
 	Schéma MRD:	"NordAir"
 	Auteur:		Arthur Tirado et Xavier Breton-L'italien	
 ********************************************************** */
+
+USE NORDAIR
+GO
+
+CREATE OR ALTER PROCEDURE PLANIFIER_VOLS(@no_vol DECIMAL(4,0), @no_pilote DECIMAL(4,0), @code_avion VARCHAR(4), @date_envolee_debut DATE, @date_envolee_fin DATE)
+AS
+BEGIN
+	SELECT
+		SEGMENT.AEROPORT_DEPART,
+		SEGMENT.AEROPORT_DESTINATION,
+		VOL.NO_VOL,
+		ENVOLEE.DATE_ENVOLEE,
+		AVION.APPEL_AVION,
+		PILOTE.NO_PILOTE
+	FROM
+		SEGMENT
+		INNER JOIN VOL
+			ON VOL.ID_VOL = SEGMENT.ID_VOL
+		INNER JOIN ENVOLEE
+			ON ENVOLEE.ID_SEGMENT = SEGMENT.ID_SEGMENT
+		INNER JOIN AVION
+			ON AVION.ID_AVION = ENVOLEE.ID_AVION
+		INNER JOIN PILOTE
+			ON PILOTE.ID_PILOTE = ENVOLEE.ID_PILOTE
+
+	IF(@no_vol NOT IN (SELECT VOL.NO_VOL FROM VOL))
+	BEGIN
+		RAISERROR('Numéro de vol non trouvé', 11, 1)
+	END
+	IF(@no_pilote NOT IN (SELECT PILOTE.NO_PILOTE FROM PILOTE))
+	BEGIN
+		RAISERROR('Numéro de pilote non trouvé', 11, 1)
+	END
+	IF(@code_avion NOT IN (SELECT AVION.APPEL_AVION FROM AVION))
+	BEGIN
+		RAISERROR('Numéro de vol non trouvé', 11, 1)
+	END
+	IF(@date_envolee_fin < @date_envolee_debut)
+	BEGIN
+		RAISERROR('Date de fin avant celle de début', 11, 1)
+	END
+
+	INSERT INTO ENVOLEE(DATE_ENVOLEE, ID_SEGMENT, ID_AVION, ID_PILOTE)
+	SELECT @date_envolee_debut, SEGMENT.ID_SEGMENT, AVION.ID_AVION, PILOTE.ID_PILOTE
+	FROM SEGMENT
+		INNER JOIN AVION
+			ON AVION.APPEL_AVION = @code_avion
+		INNER JOIN PILOTE
+			ON PILOTE.NO_PILOTE = @no_pilote
+	WHERE
+		SEGMENT.ID_VOL NOT IN (SELECT VOL.ID_VOL FROM VOL WHERE NO_VOL = @no_vol)
+
+	INSERT INTO ENVOLEE(DATE_ENVOLEE, ID_SEGMENT, ID_AVION, ID_PILOTE)
+	SELECT @date_envolee_fin, SEGMENT.ID_SEGMENT, AVION.ID_AVION, PILOTE.ID_PILOTE
+	FROM SEGMENT
+		INNER JOIN AVION
+			ON AVION.APPEL_AVION = @code_avion
+		INNER JOIN PILOTE
+			ON PILOTE.NO_PILOTE = @no_pilote
+	WHERE
+		SEGMENT.ID_VOL NOT IN (SELECT VOL.ID_VOL FROM VOL WHERE NO_VOL = @no_vol)
+END
+GO
