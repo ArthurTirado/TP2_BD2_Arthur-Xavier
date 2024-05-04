@@ -4,6 +4,7 @@
 	Auteur:		Arthur Tirado et Xavier Breton-L'italien	
 ********************************************************** */
 USE NORDAIR
+GO
 -- Question E.2
 /*
 Créer une table AUDIT_ANNULATION_RESERVATION qui va contenir de l’information sur chaque
@@ -18,12 +19,12 @@ réservation annulée :
 DROP TABLE IF EXISTS AUDIT_ANNULATION_RESERVATION
 
 CREATE TABLE AUDIT_ANNULATION_RESERVATION(
-	ID_RESERVATION				SMALLINT		NOT NULL,
-	DATE_RESERVATION			DATE			NOT NULL,
-	DATE_ANNULATION				DATE			NOT NULL,
-	UTILISATEUR					VARCHAR(50)		NOT NULL,
+	ID_RESERVATION				SMALLINT			NOT NULL,
+	DATE_RESERVATION			DATETIME			NOT NULL,
+	DATE_ANNULATION				DATETIME			NOT NULL,
+	ANNULEE_PAR_USER			VARCHAR(30)			NOT NULL,
 	ID_PASSAGER					SMALLINT			NOT NULL,
-	LIST_ENVOLEES				VARCHAR(50)		NOT NULL
+	LISTE_ENVOLEES				VARCHAR(100)		NULL
 )
 /*
 Écrire le trigger T-SQL « RESERVATION_ANNULEE » qui, lorsqu’une réservation est annulée (voir la
@@ -49,9 +50,9 @@ AS
             (ID_RESERVATION,
              DATE_RESERVATION,
              DATE_ANNULATION,
-             UTILISATEUR,
+             ANNULEE_PAR_USER,
              ID_PASSAGER,
-             LIST_ENVOLEES)
+             LISTE_ENVOLEES)
         SELECT
             ID_RESERVATION,
             DATE_RESERVATION,

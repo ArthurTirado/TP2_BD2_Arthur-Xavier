@@ -196,6 +196,48 @@ SELECT
 FROM AUDIT_ANNULATION_RESERVATION
 /* Résultat des 3 derniers SELECT ici */
 
+/*
+RESERVATION
+
+ID_RESERVATION                          DATE_RESERVATION        ID_PASSAGER                             ANNULEE
+--------------------------------------- ----------------------- --------------------------------------- -------
+1                                       2024-04-13 00:00:00.000 1                                       0
+2                                       2024-04-18 00:00:00.000 2                                       0
+5                                       2024-04-20 00:00:00.000 5                                       1
+
+(3 rows affected)
+*/
+
+/*
+RESERVATION_ENVOLEE
+
+ID_RESERV_ENVOLEE                       ID_RESERVATION                          ID_ENVOLEE                              CODE_SIEGE
+--------------------------------------- --------------------------------------- --------------------------------------- ----------
+1                                       1                                       1                                       01A
+2                                       2                                       1                                       02B
+3                                       2                                       8                                       03C
+7                                       5                                       1                                       07A
+8                                       5                                       2                                       07A
+9                                       5                                       3                                       07A
+10                                      5                                       4                                       07A
+11                                      5                                       61                                      04C
+12                                      5                                       62                                      04C
+13                                      5                                       63                                      04C
+14                                      5                                       80                                      04D
+
+(11 rows affected)
+*/
+
+/*
+AUDIT_ANNULATION_RESERVATION
+
+ID_RESERVATION DATE_RESERVATION DATE_ANNULATION ANNULEE_PAR_USER               ID_PASSAGER LISTE_ENVOLEES
+-------------- ---------------- --------------- ------------------------------ ----------- ------------------------------
+5              2024-04-20       2024-05-03      DESKTOP-RSKQ5V3\xavto          5           1-2-3-4-61-62-63-80
+
+(1 row affected)
+*/
+
 -- Test 2
 SELECT * FROM RESERVATION WHERE ID_RESERVATION IN (1,2,5)
 SELECT * FROM RESERVATION_ENVOLEE WHERE ID_RESERVATION IN (1,2,5)
@@ -216,6 +258,49 @@ SELECT
 FROM AUDIT_ANNULATION_RESERVATION
 /* Résultat des 3 derniers SELECT ici */
 
+/*
+RESERVATION
+
+ID_RESERVATION                          DATE_RESERVATION        ID_PASSAGER                             ANNULEE
+--------------------------------------- ----------------------- --------------------------------------- -------
+1                                       2024-04-13 00:00:00.000 1                                       0
+2                                       2024-04-18 00:00:00.000 2                                       0
+5                                       2024-04-20 00:00:00.000 5                                       1
+
+(3 rows affected)
+*/
+
+/*
+RESERVATION_ENVOLEE
+
+ID_RESERV_ENVOLEE                       ID_RESERVATION                          ID_ENVOLEE                              CODE_SIEGE
+--------------------------------------- --------------------------------------- --------------------------------------- ----------
+1                                       1                                       1                                       01A
+2                                       2                                       1                                       02B
+3                                       2                                       8                                       03C
+7                                       5                                       1                                       07A
+8                                       5                                       2                                       07A
+9                                       5                                       3                                       07A
+10                                      5                                       4                                       07A
+11                                      5                                       61                                      04C
+12                                      5                                       62                                      04C
+13                                      5                                       63                                      04C
+14                                      5                                       80                                      04D
+
+(11 rows affected)
+*/
+
+/*
+AUDIT_ANNULATION_RESERVATION
+
+ID_RESERVATION DATE_RESERVATION DATE_ANNULATION ANNULEE_PAR_USER               ID_PASSAGER LISTE_ENVOLEES
+-------------- ---------------- --------------- ------------------------------ ----------- ------------------------------
+5              2024-04-20       2024-05-03      DESKTOP-RSKQ5V3\xavto          5           1-2-3-4-61-62-63-80
+5              2024-04-20       2024-05-03      DESKTOP-RSKQ5V3\xavto          5           1-2-3-4-61-62-63-80
+
+(2 rows affected)
+*/
+
 -- Test 3
 SELECT * FROM RESERVATION WHERE ID_RESERVATION IN (1,2,5,7)
 SELECT * FROM RESERVATION_ENVOLEE WHERE ID_RESERVATION IN (1,2,5,7)
@@ -235,6 +320,53 @@ SELECT
 	LEFT(LISTE_ENVOLEES, 30)		AS LISTE_ENVOLEES
 FROM AUDIT_ANNULATION_RESERVATION
 /* Résultat des 3 derniers SELECT ici */
+/*
+RESERVATION
+
+ID_RESERVATION                          DATE_RESERVATION        ID_PASSAGER                             ANNULEE
+--------------------------------------- ----------------------- --------------------------------------- -------
+1                                       2024-04-13 00:00:00.000 1                                       0
+2                                       2024-04-18 00:00:00.000 2                                       0
+5                                       2024-04-20 00:00:00.000 5                                       1
+7                                       2024-05-01 00:00:00.000 7                                       1
+
+(4 rows affected)
+*/
+
+/*
+RESERVATION_ENVOLEE
+
+ID_RESERV_ENVOLEE                       ID_RESERVATION                          ID_ENVOLEE                              CODE_SIEGE
+--------------------------------------- --------------------------------------- --------------------------------------- ----------
+1                                       1                                       1                                       01A
+2                                       2                                       1                                       02B
+3                                       2                                       8                                       03C
+7                                       5                                       1                                       07A
+8                                       5                                       2                                       07A
+9                                       5                                       3                                       07A
+10                                      5                                       4                                       07A
+11                                      5                                       61                                      04C
+12                                      5                                       62                                      04C
+13                                      5                                       63                                      04C
+14                                      5                                       80                                      04D
+16                                      7                                       61                                      08A
+17                                      7                                       52                                      03A
+
+(13 rows affected)
+*/
+
+/*
+AUDIT_ANNULATION_RESERVATION
+
+ID_RESERVATION DATE_RESERVATION DATE_ANNULATION ANNULEE_PAR_USER               ID_PASSAGER LISTE_ENVOLEES
+-------------- ---------------- --------------- ------------------------------ ----------- ------------------------------
+5              2024-04-20       2024-05-03      DESKTOP-RSKQ5V3\xavto          5           1-2-3-4-61-62-63-80
+5              2024-04-20       2024-05-03      DESKTOP-RSKQ5V3\xavto          5           1-2-3-4-61-62-63-80
+7              2024-05-01       2024-05-03      DESKTOP-RSKQ5V3\xavto          7           52-61
+7              2024-05-01       2024-05-03      DESKTOP-RSKQ5V3\xavto          7           52-61
+
+(4 rows affected)
+*/
 
 -- Test 4
 SELECT * FROM RESERVATION WHERE ID_RESERVATION IN (1,2,5,7)
@@ -256,6 +388,54 @@ SELECT
 FROM AUDIT_ANNULATION_RESERVATION
 /* Résultat des 3 derniers SELECT ici */
 
+/*
+RESERVATION
+
+ID_RESERVATION                          DATE_RESERVATION        ID_PASSAGER                             ANNULEE
+--------------------------------------- ----------------------- --------------------------------------- -------
+1                                       2024-05-03 22:55:44.767 1                                       0
+2                                       2024-04-18 00:00:00.000 2                                       0
+5                                       2024-04-20 00:00:00.000 5                                       1
+7                                       2024-05-01 00:00:00.000 7                                       1
+
+(4 rows affected)
+*/
+
+/*
+RESERVATION_ENVOLEE
+
+ID_RESERV_ENVOLEE                       ID_RESERVATION                          ID_ENVOLEE                              CODE_SIEGE
+--------------------------------------- --------------------------------------- --------------------------------------- ----------
+1                                       1                                       1                                       01A
+2                                       2                                       1                                       02B
+3                                       2                                       8                                       03C
+7                                       5                                       1                                       07A
+8                                       5                                       2                                       07A
+9                                       5                                       3                                       07A
+10                                      5                                       4                                       07A
+11                                      5                                       61                                      04C
+12                                      5                                       62                                      04C
+13                                      5                                       63                                      04C
+14                                      5                                       80                                      04D
+16                                      7                                       61                                      08A
+17                                      7                                       52                                      03A
+
+(13 rows affected)
+*/
+
+/*
+AUDIT_ANNULATION_RESERVATION
+
+ID_RESERVATION DATE_RESERVATION DATE_ANNULATION ANNULEE_PAR_USER               ID_PASSAGER LISTE_ENVOLEES
+-------------- ---------------- --------------- ------------------------------ ----------- ------------------------------
+5              2024-04-20       2024-05-03      DESKTOP-RSKQ5V3\xavto          5           1-2-3-4-61-62-63-80
+5              2024-04-20       2024-05-03      DESKTOP-RSKQ5V3\xavto          5           1-2-3-4-61-62-63-80
+7              2024-05-01       2024-05-03      DESKTOP-RSKQ5V3\xavto          7           52-61
+7              2024-05-01       2024-05-03      DESKTOP-RSKQ5V3\xavto          7           52-61
+
+(4 rows affected)
+*/
+
 -- Test 5
 SELECT * FROM RESERVATION WHERE ID_RESERVATION IN (1,2,5,7)
 SELECT * FROM RESERVATION_ENVOLEE WHERE ID_RESERVATION IN (1,2,5,7)
@@ -276,6 +456,55 @@ SELECT
 FROM AUDIT_ANNULATION_RESERVATION
 /* Résultat des 3 derniers SELECT ici */
 
+/*
+RESERVATION
+
+ID_RESERVATION                          DATE_RESERVATION        ID_PASSAGER                             ANNULEE
+--------------------------------------- ----------------------- --------------------------------------- -------
+1                                       2024-05-03 22:55:44.767 1                                       1
+2                                       2024-04-18 00:00:00.000 2                                       0
+5                                       2024-04-20 00:00:00.000 5                                       1
+7                                       2024-05-01 00:00:00.000 7                                       1
+
+(4 rows affected)
+*/
+
+/*
+RESERVATION_ENVOLEE
+
+ID_RESERV_ENVOLEE                       ID_RESERVATION                          ID_ENVOLEE                              CODE_SIEGE
+--------------------------------------- --------------------------------------- --------------------------------------- ----------
+1                                       1                                       1                                       01A
+2                                       2                                       1                                       02B
+3                                       2                                       8                                       03C
+7                                       5                                       1                                       07A
+8                                       5                                       2                                       07A
+9                                       5                                       3                                       07A
+10                                      5                                       4                                       07A
+11                                      5                                       61                                      04C
+12                                      5                                       62                                      04C
+13                                      5                                       63                                      04C
+14                                      5                                       80                                      04D
+16                                      7                                       61                                      08A
+17                                      7                                       52                                      03A
+
+(13 rows affected)
+*/
+
+/*
+AUDIT_ANNULATION_RESERVATION
+
+ID_RESERVATION DATE_RESERVATION DATE_ANNULATION ANNULEE_PAR_USER               ID_PASSAGER LISTE_ENVOLEES
+-------------- ---------------- --------------- ------------------------------ ----------- ------------------------------
+5              2024-04-20       2024-05-03      DESKTOP-RSKQ5V3\xavto          5           1-2-3-4-61-62-63-80
+5              2024-04-20       2024-05-03      DESKTOP-RSKQ5V3\xavto          5           1-2-3-4-61-62-63-80
+7              2024-05-01       2024-05-03      DESKTOP-RSKQ5V3\xavto          7           52-61
+7              2024-05-01       2024-05-03      DESKTOP-RSKQ5V3\xavto          7           52-61
+1              2024-05-03       2024-05-03      DESKTOP-RSKQ5V3\xavto          1           1
+
+(5 rows affected)
+*/
+
 -- Test 6
 SELECT * FROM RESERVATION WHERE ID_RESERVATION IN (1,2,5,7)
 SELECT * FROM RESERVATION_ENVOLEE WHERE ID_RESERVATION IN (1,2,5,7)
@@ -295,6 +524,55 @@ SELECT
 	LEFT(LISTE_ENVOLEES, 30)		AS LISTE_ENVOLEES
 FROM AUDIT_ANNULATION_RESERVATION
 /* Résultat des 3 derniers SELECT ici */
+/*
+RESERVATION
+
+ID_RESERVATION                          DATE_RESERVATION        ID_PASSAGER                             ANNULEE
+--------------------------------------- ----------------------- --------------------------------------- -------
+1                                       2024-05-03 22:55:44.767 1                                       1
+2                                       2024-04-18 00:00:00.000 2                                       0
+5                                       2024-04-20 00:00:00.000 5                                       1
+7                                       2024-05-01 00:00:00.000 7                                       1
+
+(4 rows affected)
+*/
+
+/*
+RESERVATION_ENVOLEE
+
+ID_RESERV_ENVOLEE                       ID_RESERVATION                          ID_ENVOLEE                              CODE_SIEGE
+--------------------------------------- --------------------------------------- --------------------------------------- ----------
+1                                       1                                       1                                       01A
+2                                       2                                       1                                       02B
+3                                       2                                       8                                       03C
+7                                       5                                       1                                       07A
+8                                       5                                       2                                       07A
+9                                       5                                       3                                       07A
+10                                      5                                       4                                       07A
+11                                      5                                       61                                      04C
+12                                      5                                       62                                      04C
+13                                      5                                       63                                      04C
+14                                      5                                       80                                      04D
+16                                      7                                       61                                      08A
+17                                      7                                       52                                      03A
+
+(13 rows affected)
+*/
+
+/*
+AUDIT_ANNULATION_RESERVATION
+
+ID_RESERVATION DATE_RESERVATION DATE_ANNULATION ANNULEE_PAR_USER               ID_PASSAGER LISTE_ENVOLEES
+-------------- ---------------- --------------- ------------------------------ ----------- ------------------------------
+5              2024-04-20       2024-05-03      DESKTOP-RSKQ5V3\xavto          5           1-2-3-4-61-62-63-80
+5              2024-04-20       2024-05-03      DESKTOP-RSKQ5V3\xavto          5           1-2-3-4-61-62-63-80
+7              2024-05-01       2024-05-03      DESKTOP-RSKQ5V3\xavto          7           52-61
+7              2024-05-01       2024-05-03      DESKTOP-RSKQ5V3\xavto          7           52-61
+1              2024-05-03       2024-05-03      DESKTOP-RSKQ5V3\xavto          1           1
+2              2024-04-18       2024-05-03      DESKTOP-RSKQ5V3\xavto          2           1-8
+
+(6 rows affected)
+*/
 
 ROLLBACK
 
@@ -315,38 +593,93 @@ ROLLBACK
 BEGIN TRANSACTION
 
 -- Test 1
+
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-06-16' AND '2024-06-17'
 EXECUTE PLANIFIER_VOLS 1823, 55, 'CADM', '2024-06-16', '2024-06-17'
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-06-16' AND '2024-06-17'
+/*
+ID_ENVOLEE                              DATE_ENVOLEE            ID_SEGMENT                              ID_AVION                                ID_PILOTE
+--------------------------------------- ----------------------- --------------------------------------- --------------------------------------- ---------------------------------------
+359                                     2024-06-16 00:00:00.000 5                                       1                                       3
+360                                     2024-06-16 00:00:00.000 6                                       1                                       3
+361                                     2024-06-16 00:00:00.000 7                                       1                                       3
+362                                     2024-06-16 00:00:00.000 8                                       1                                       3
+363                                     2024-06-17 00:00:00.000 5                                       1                                       3
+364                                     2024-06-17 00:00:00.000 6                                       1                                       3
+365                                     2024-06-17 00:00:00.000 7                                       1                                       3
+366                                     2024-06-17 00:00:00.000 8                                       1                                       3
+
+(8 rows affected)
+*/
 
 -- Test 2
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-09-01' AND '2024-09-05'
 EXECUTE PLANIFIER_VOLS 1733, 22, 'COPA', '2024-09-01', '2024-09-05'
+/*
+Msg 50000, Level 11, State 1, Procedure PLANIFIER_VOLS, Line 25 [Batch Start Line 339]
+Numéro de vol non trouvé
+*/
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-09-01' AND '2024-09-05'
 
 -- Test 3
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-09-01' AND '2024-09-05'
 EXECUTE PLANIFIER_VOLS 1923, 55, 'TOTO', '2024-09-01', '2024-09-05'
+/*
+Msg 50000, Level 11, State 1, Procedure PLANIFIER_VOLS, Line 33 [Batch Start Line 346]
+Code de l`avion non trouvé
+*/
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-09-01' AND '2024-09-05'
 
 -- Test 4
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-07-01' AND '2024-07-01'
 EXECUTE PLANIFIER_VOLS 1822, 55, 'CADM', '2024-07-01', '2024-07-01'
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-07-01' AND '2024-07-01'
+/*
+ID_ENVOLEE                              DATE_ENVOLEE            ID_SEGMENT                              ID_AVION                                ID_PILOTE
+--------------------------------------- ----------------------- --------------------------------------- --------------------------------------- ---------------------------------------
+367                                     2024-07-01 00:00:00.000 1                                       1                                       3
+368                                     2024-07-01 00:00:00.000 2                                       1                                       3
+369                                     2024-07-01 00:00:00.000 3                                       1                                       3
+370                                     2024-07-01 00:00:00.000 4                                       1                                       3
+
+(4 rows affected)
+*/
 
 -- Test 5
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-09-01' AND '2024-09-05'
 EXECUTE PLANIFIER_VOLS 1923, 99, 'COPA', '2024-09-01', '2024-09-05'
+/*
+Msg 50000, Level 11, State 1, Procedure PLANIFIER_VOLS, Line 29 [Batch Start Line 368]
+Numéro de pilote non trouvé
+*/
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-09-01' AND '2024-09-05'
 
 -- Test 6
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-06-01' AND '2024-06-05'
 EXECUTE PLANIFIER_VOLS 1923, 22, 'COPA', '2024-06-01', '2024-06-05'
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-06-01' AND '2024-06-05'
+/*
+ID_ENVOLEE                              DATE_ENVOLEE            ID_SEGMENT                              ID_AVION                                ID_PILOTE
+--------------------------------------- ----------------------- --------------------------------------- --------------------------------------- ---------------------------------------
+374                                     2024-06-01 00:00:00.000 13                                      2                                       1
+375                                     2024-06-01 00:00:00.000 14                                      2                                       1
+376                                     2024-06-01 00:00:00.000 15                                      2                                       1
+377                                     2024-06-01 00:00:00.000 16                                      2                                       1
+378                                     2024-06-05 00:00:00.000 13                                      2                                       1
+379                                     2024-06-05 00:00:00.000 14                                      2                                       1
+380                                     2024-06-05 00:00:00.000 15                                      2                                       1
+381                                     2024-06-05 00:00:00.000 16                                      2                                       1
+
+(8 rows affected)
+*/
 
 -- Test 7
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-09-05' AND '2024-09-01'
 EXECUTE PLANIFIER_VOLS 1923, 61, 'CADM', '2024-06-05', '2024-06-01'
+/*
+Msg 50000, Level 11, State 1, Procedure PLANIFIER_VOLS, Line 37 [Batch Start Line 397]
+Date de fin avant celle de début
+*/
 SELECT * FROM ENVOLEE WHERE DATE_ENVOLEE BETWEEN '2024-09-05' AND '2024-09-01'
 
 ROLLBACK
